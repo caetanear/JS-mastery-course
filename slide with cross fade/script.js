@@ -1,35 +1,72 @@
 (function(){
     "use strict";
 
-        const myImages = ["image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg", "image5.jpg"];
-
         let currentImage = 0;
+        const myphotos = ['image1.jpg', 'image2.jpg', 'image3.jpg', 'image4.jpg', 'image5.jpg'];
+        const container = document.getElementById('content');
+        const nextBtn = document.getElementById('next');
+        const previousBtn = document.getElementById('previous');
 
-        document.getElementById('next').onclick = nextPhoto;
-        document.getElementById('previous').onclick = previousPhoto;
+        //adding the next button event listener
+        nextBtn.addEventListener('click', function(event){
+            event.preventDefault();
 
-        function nextPhoto(){
-            //increment the currentImage
             currentImage++;
-
-            if(currentImage > myImages.length-1){
-                currentImage = 0;
+            if(currentImage > myphotos.length-1){
+                currentImage=0;
             }
+            //swapImage();
 
-            //goes into the array "myImages" and find the array correspondent to the currentImage
-            document.getElementById('myimage').src = myImages[currentImage];
+            //adding the new slide on top
+            //1.create a new image element
+            const newSlide = document.createElement('img');
+            //2.setting the source attribute
+            newSlide.src = `slides/${myphotos[currentImage]}`;
+            //3.setting the class name
+            newSlide.className = "fade-in-img";
+            //4.appending to the container
+            container.appendChild(newSlide);
 
-        };
+            //remove extra children 
+            if(container.children.length > 2){
+                container.removeChild(container.children[0]);
+            }
+        });
 
-        function previousPhoto(){
-            //decrement the currentImage so it goes backwards
+        //adding the PREVIOUS button event listener
+        previousBtn.addEventListener('click', function(event){
+            event.preventDefault();
+
             currentImage--;
-            //currentImage has to count till less then 0 and does the oposite of the nextPhoto function
             if(currentImage < 0){
-                currentImage = 4;
+                currentImage= myphotos.length-1; //(which is 4)
             }
+            
+            //swapImage();
 
-            document.getElementById('myimage').src = myImages[currentImage];
+            //adding the same 1 to 4 components
+            const newSlide = document.createElement('img');
+            newSlide.src = `slides/${myphotos[currentImage]}`;
+            newSlide.className = "fade-in-img";
+            container.appendChild(newSlide);
 
-        }
+            //remove extra children 
+            if(container.children.length > 2){
+                container.removeChild(container.children[0]);
+            }
+        });
+
+        //refactoring the code with a function
+        /*
+       function swapImage(){
+            const newSlide = document.createElement('img');
+            newSlide.src = `slides/${myphotos[currentImage]}`;
+            newSlide.className = "fade-in-img";
+            container.appendChild(newSlide);
+
+            if(container.children.length > 2){
+                container.removeChild(container.children[0]);
+            }
+       }
+        */
 })();
